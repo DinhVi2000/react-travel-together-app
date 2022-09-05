@@ -1,0 +1,124 @@
+.navbar {
+  height: 84px;
+  background-color: white;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  z-index: 30;
+  width: 100%;
+  .navItem {
+    padding: 0 10px;
+    cursor: pointer;
+    h4 {
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+  .menuLogo {
+    a {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    img {
+      max-height: 40px;
+      width: auto;
+      object-fit: cover;
+    }
+    h4 {
+      font-size: 1.5rem;
+      color: #0194ff;
+    }
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 10px;
+  .navContent {
+  }
+}
+
+.menuLogo {
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  .homeItem {
+    a {
+      display: flex;
+      align-items: center;
+    }
+  }
+  i {
+    font-size: 1.4rem;
+    margin-right: 4px;
+    margin-bottom: 2px;
+  }
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  .navItem {
+    display: flex;
+    align-items: center;
+    .avatar {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  }
+}
+
+.container-notification {
+  cursor: pointer;
+  position: relative;
+  z-index: 99;
+  &-toggle {
+    &-badge {
+      background: var(--main-color);
+      color: var(--txt-white);
+      border-radius: 50%;
+      /* padding: 2px; */
+      width: 25px;
+      height: 25px;
+      display: flex;
+      position: absolute;
+      align-items: center;
+      justify-content: center;
+      top: -4px;
+      right: -4px;
+    }
+  }
+  &-content {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    width: max-content;
+    max-width: 400px;
+    background-color: vaR(--main-bg);
+    box-shadow: var(--box-shadow);
+    // border-radius: var(--border-radius);
+    overflow: hidden;
+    transform-origin: top right;
+    transform: scale(0);
+    transition: transform 0.3s ease 0s;
+    &.active {
+      transform: scale(1);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  }
+}

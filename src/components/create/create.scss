@@ -1,0 +1,109 @@
+.create {
+  // margin: 15px auto;
+  max-width: 680px;
+  padding: 12px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px;
+}
+
+.create__first {
+  display: flex;
+  align-items: center;
+  .avatar {
+    display: flex;
+    align-items: center;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    margin-right: 8px;
+  }
+  .content {
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    border-radius: 3rem;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+    input {
+      width: 100%;
+      align-items: center;
+      border: none;
+      background-color: #f5f5f5;
+      margin: 0 0.5rem;
+      height: 24px;
+      overflow: hidden;
+      font-size: 1.1rem;
+      color: #757575;
+      outline: none;
+      &:focus {
+        border: none;
+      }
+    }
+  }
+}
+
+.create__second {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  padding-top: 12px;
+  color: rgb(101, 103, 107);
+  .item {
+    cursor: pointer;
+    width: 200px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:first-child {
+      i {
+        color: red;
+      }
+    }
+    &:nth-child(2) {
+      i {
+        color: #45bd62;
+      }
+    }
+    &:nth-child(3) {
+      i {
+        color: #f7b928;
+      }
+    }
+    i {
+      font-size: 25px;
+      margin-right: 5px;
+    }
+    span {
+      font-size: 15px;
+      font-weight: 500;
+    }
+    &:hover {
+      background-color: #f0f2f5;
+      border-radius: 10px;
+    }
+  }
+}
+
+.tab-body {
+  // position: relative;
+  // div {
+  position: absolute;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 500ms ease-in 0ms, transform 500ms ease-in-out 0ms;
+
+  // }
+}
+.active {
+  position: initial;
+  opacity: 1;
+  transform: scale(1);
+}
