@@ -15,8 +15,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUserData } from "../../redux/auth/login.actions";
 
 import { auth, google, facebook } from "../../conifg/firebaseConfig";
-import { signInWithPopup, signOut } from "firebase/auth";
+import {
+  signInWithPopup,
+  signOut,
+  fetchSignInMethodsForEmail,
+  signInWithCredential,
+  linkWithCredential,
+} from "firebase/auth";
 import { setTokenAuthenticator } from "../../services/Authenticator.service";
+import ErrorNotitfy from "../../components/notification/ErrorNotitfy";
 
 const schema = yup
   .object({
@@ -33,6 +40,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
+  const [errorContent, setErrorContent] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -42,7 +51,7 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-    if (!loading) {
+    if (loading === false) {
       setLoading(true);
       try {
         const response = await axios.post(AUTH.SIGN_IN, {
@@ -58,6 +67,9 @@ const Login = () => {
         }
       } catch (error) {
         setLoading(false);
+        if (!error.response.data.success) {
+          setErrorContent("Username hoặc mật khẩu không đúng.");
+        }
       }
     }
   };
@@ -65,21 +77,25 @@ const Login = () => {
   const loginWithGoogle = async () => {
     if (!googleLoading) {
       setGoogleLoading(true);
-      const result = await signInWithPopup(auth, google);
-      const { displayName, email, photoURL, phoneNumber } = result.user;
       try {
-        const res = await axios.post(AUTH.SIGN_IN_EXTERNAL, {
-          username: displayName,
-          fullName: displayName,
-          email,
-          imageAvatar: photoURL,
-          phone: phoneNumber,
-        });
-        console.log("res :", res);
-        if (res.data.success && res.data.data) {
-          setTokenAuthenticator(res.data.data.accessToken);
+        const result = await signInWithPopup(auth, google);
+        const { displayName, email, photoURL, phoneNumber } = result.user;
+        try {
+          const res = await axios.post(AUTH.SIGN_IN_EXTERNAL, {
+            username: displayName,
+            fullName: displayName,
+            email,
+            imageAvatar: photoURL,
+            phone: phoneNumber,
+          });
+          console.log("res :", res);
+          if (res.data.success && res.data.data) {
+            setTokenAuthenticator(res.data.data.accessToken);
+            setGoogleLoading(false);
+            navigate("/");
+          }
+        } catch (error) {
           setGoogleLoading(false);
-          navigate("/");
         }
       } catch (error) {
         setGoogleLoading(false);
@@ -87,8 +103,17 @@ const Login = () => {
     }
   };
   const loginWithFacebook = async () => {
-    const result = await signInWithPopup(auth, facebook);
-    console.log("result :", result);
+    try {
+      const result = await signInWithPopup(auth, facebook);
+      console.log("result :", result);
+    } catch (error) {
+      console.log("error :", error);
+      const providers = await fetchSignInMethodsForEmail(error.email);
+      console.log("providers :", providers);
+      const user = await signInWithCredential(error.credential);
+      console.log("user :", user);
+      user.linkWithCredential(error.credential);
+    }
   };
 
   return (
@@ -98,6 +123,11 @@ const Login = () => {
         <p className="login__note">
           Để đảm bảo an toàn, xin vui lòng đăng nhập để truy cập vào thông tin
         </p>
+        {errorContent !== "" && (
+          <div className="mt-3">
+            <ErrorNotitfy content={errorContent}></ErrorNotitfy>
+          </div>
+        )}
         <div className="login__form ">
           <form action="" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
@@ -136,11 +166,14 @@ const Login = () => {
                 {errors.password?.message}
               </p>
             </div>
-            <div className="login__button cursor-pointer">
-              <button type="submit" className="w-full  flex justify-center">
+            <button
+              type="submit"
+              className="login__button w-full cursor-pointer hover:bg-blue-400"
+            >
+              <span className="">
                 {loading ? <ButtonLoading /> : "Đăng nhập"}
-              </button>
-            </div>
+              </span>
+            </button>
           </form>
         </div>
         <div className="mt-[24px] flex justify-between">

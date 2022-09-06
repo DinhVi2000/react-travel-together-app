@@ -25,15 +25,30 @@ const Create = ({ togglePopup }) => {
         </div>
       </div>
       <div className="create__second">
-        <div className="item">
+        <div
+          className="item"
+          onClick={() => {
+            togglePopup();
+          }}
+        >
           <i className="bx bxs-video-plus"></i>
           <span className="text-sm">Video trực tiếp</span>
         </div>
-        <div className="item">
+        <div
+          className="item"
+          onClick={() => {
+            togglePopup();
+          }}
+        >
           <i className="bx bx-images"></i>
           <span className="text-sm">Ảnh/Video</span>
         </div>
-        <div className="item">
+        <div
+          className="item"
+          onClick={() => {
+            togglePopup();
+          }}
+        >
           <i className="bx bx-smile"></i>
           <span className="text-xs">Cảm xúc/Hoạt động</span>
         </div>
