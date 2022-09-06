@@ -39,6 +39,7 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [facebookLoading, setFacebookLoading] = useState(false);
 
   const [errorContent, setErrorContent] = useState("");
 
@@ -58,7 +59,6 @@ const Login = () => {
           username: data.username,
           password: data.password,
         });
-        console.log("response.data :", response.data);
         if (response.data && response.data.success) {
           setLoading(false);
           setTokenAuthenticator(response.data.data.accessToken);
@@ -88,7 +88,6 @@ const Login = () => {
             imageAvatar: photoURL,
             phone: phoneNumber,
           });
-          console.log("res :", res);
           if (res.data.success && res.data.data) {
             setTokenAuthenticator(res.data.data.accessToken);
             setGoogleLoading(false);
@@ -103,16 +102,35 @@ const Login = () => {
     }
   };
   const loginWithFacebook = async () => {
+    setFacebookLoading(true);
     try {
       const result = await signInWithPopup(auth, facebook);
-      console.log("result :", result);
+      const { displayName, email, photoURL, phoneNumber } = result.user;
+      try {
+        const res = await axios.post(AUTH.SIGN_IN_EXTERNAL, {
+          username: displayName,
+          fullName: displayName,
+          email,
+          imageAvatar: photoURL,
+          phone: phoneNumber,
+        });
+        if (res.data.success && res.data.data) {
+          setTokenAuthenticator(res.data.data.accessToken);
+          setFacebookLoading(false);
+          navigate("/");
+        }
+      } catch (error) {
+        setFacebookLoading(false);
+      }
     } catch (error) {
-      console.log("error :", error);
-      const providers = await fetchSignInMethodsForEmail(error.email);
-      console.log("providers :", providers);
-      const user = await signInWithCredential(error.credential);
-      console.log("user :", user);
-      user.linkWithCredential(error.credential);
+      setFacebookLoading(false);
+
+      // console.log("error :", error);
+      // const providers = await fetchSignInMethodsForEmail(error.email);
+      // console.log("providers :", providers);
+      // const user = await signInWithCredential(error.credential);
+      // console.log("user :", user);
+      // user.linkWithCredential(error.credential);
     }
   };
 
