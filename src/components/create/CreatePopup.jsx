@@ -12,7 +12,7 @@ import { BLOG } from "../../constants/paths";
 import ButtonLoading from "../loading/ButtonLoading";
 import ErrorNotitfy from "../notification/ErrorNotitfy";
 
-const CreatePopup = ({ togglePopup }) => {
+const CreatePopup = ({ togglePopup, usersWithBlog, setUsersWithBlog }) => {
   const [loading, setLoading] = useState(false);
 
   const [content, setContent] = useState("");
@@ -78,6 +78,14 @@ const CreatePopup = ({ togglePopup }) => {
             lng: autocomplete.getPlace().geometry.location.lng(),
           });
           if (res?.data?.data) {
+            setUsersWithBlog([
+              ...usersWithBlog,
+              {
+                ...user,
+                createdDate: res.data.data.createdDate,
+                blog: res.data.data,
+              },
+            ]);
             setLoading(false);
             togglePopup();
           }
@@ -99,16 +107,13 @@ const CreatePopup = ({ togglePopup }) => {
         .then(() => {
           getDownloadURL(imageRef)
             .then((url) => {
-              console.log("url :", url);
               res(url);
             })
             .catch((err) => {
-              console.log("err :", err);
               rej(err);
             });
         })
         .catch((err) => {
-          console.log("err :", err);
           rej(err);
         });
     });

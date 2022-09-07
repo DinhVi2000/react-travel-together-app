@@ -1,4 +1,3 @@
-import axios from "axios";
 import moment from "moment";
 import React from "react";
 import { useState } from "react";
@@ -8,7 +7,6 @@ import { dateSortDesc } from "../../Method";
 import Comment from "./Comment";
 
 const BlogDetail = ({ user, blog, setUser }) => {
-  console.log("user :", user);
   const currentUser = useSelector((state) => state.loginReducer.user);
 
   const { id, avatar, fullName, localGuide } = user;

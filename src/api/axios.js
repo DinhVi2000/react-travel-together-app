@@ -28,7 +28,6 @@ export const callApi = async (token, method, apiPath, params, data) => {
     const response = await axios(options);
     return response.data;
   } catch (err) {
-    console.log("err :", err);
     return data;
   }
 };

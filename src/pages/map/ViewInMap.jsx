@@ -16,9 +16,7 @@ const ViewInMap = () => {
     lat: 15.968687485725862,
     lng: 108.26125417215097,
   });
-  const [bounds, setBounds] = useState(null);
   const [usersWithBlog, setUsersWithBlog] = useState([]);
-  console.log("blogs :", usersWithBlog);
   const [autocomplete, setAutocomplete] = useState(null);
   const [isEnteredPlace, setIsEnteredPlace] = useState(false);
 
@@ -126,7 +124,6 @@ const ViewInMap = () => {
       <Map
         coordinates={coordinates}
         setCoordinates={setCoordinates}
-        setBounds={setBounds}
         users={usersWithBlog}
         autocomplete={autocomplete}
         isEnteredPlace={isEnteredPlace}

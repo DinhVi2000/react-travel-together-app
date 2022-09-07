@@ -21,7 +21,7 @@ import { dateSortDesc } from "../../Method";
 import userApi from "../../api/userApi";
 import { Fragment } from "react";
 
-const BlogItem = ({ user }) => {
+const BlogItem = ({ user, setUsersWithBlog }) => {
   const currentUser = useSelector((state) => state.loginReducer.user);
 
   const { fullName, avatar, id } = user;
@@ -75,6 +75,11 @@ const BlogItem = ({ user }) => {
   const deleteBlog = async (blogId) => {
     try {
       const res = await axios.delete(BLOG.CREATE_BLOG, { params: { blogId } });
+      if (res.data.data) {
+        setUsersWithBlog((prevUser) => {
+          return prevUser.filter((item) => item.blog.id !== user.blog.id);
+        });
+      }
     } catch (error) {}
   };
 
@@ -182,8 +187,8 @@ const BlogItem = ({ user }) => {
             navigation
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log("slide change")}
+            // onSwiper={(swiper) => console.log(swiper)}
+            // onSlideChange={() => console.log("slide change")}
           >
             {images.map((image, index) => (
               <SwiperSlide key={index}>

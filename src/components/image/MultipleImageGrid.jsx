@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 
 const MultipleImageGrid = ({ images }) => {
-  console.log("images :", images);
   const convertToBlobURL = (files) => {
     const selectedFilesArray = Array.from(files);
     return selectedFilesArray.map((file) => {

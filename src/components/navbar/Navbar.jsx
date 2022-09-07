@@ -43,7 +43,6 @@ const Navbar = () => {
           <div className="navItem">
             <a href="/">
               <img src={logo} alt="" />
-              <h4>Travel together</h4>
             </a>
           </div>
         </div>

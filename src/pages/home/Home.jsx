@@ -94,7 +94,13 @@ const Home = () => {
               <Fragment>
                 {usersWithBlog?.length > 0 &&
                   dateSortDesc(usersWithBlog, "createdDate").map(
-                    (user, index) => <BlogItem key={user.blog.id} user={user} />
+                    (user, index) => (
+                      <BlogItem
+                        key={user.blog.id}
+                        user={user}
+                        setUsersWithBlog={setUsersWithBlog}
+                      />
+                    )
                   )}
               </Fragment>
             )}
@@ -102,7 +108,13 @@ const Home = () => {
         </div>
         {isOpen && (
           <Popup
-            content={<CreatePopup togglePopup={togglePopup} />}
+            content={
+              <CreatePopup
+                togglePopup={togglePopup}
+                usersWithBlog={usersWithBlog}
+                setUsersWithBlog={setUsersWithBlog}
+              />
+            }
             handleClose={togglePopup}
           />
         )}

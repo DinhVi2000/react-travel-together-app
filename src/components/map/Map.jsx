@@ -5,7 +5,6 @@ import GoogleMapReact from "google-map-react";
 const Map = ({
   coordinates,
   setCoordinates,
-  setBounds,
   users,
   autocomplete,
   isEnteredPlace,
