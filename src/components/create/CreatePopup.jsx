@@ -140,24 +140,28 @@ const CreatePopup = ({ togglePopup }) => {
               )}
             </p>
           </div>
-          {errorContent !== "" && <ErrorNotitfy content={errorContent} />}
-          <div className="px-4 h-auto">
+          {errorContent !== "" && (
+            <div className="px-4">
+              <ErrorNotitfy content={errorContent} />
+            </div>
+          )}
+          <div className="px-4 py-2 h-auto">
             <textarea
               value={content}
               onChange={(e) => {
                 setContent(e.target.value);
               }}
               className="w-full outline-none text-xl"
-              rows="1"
+              rows="3"
               cols="50"
               placeholder="Bạn đang nghĩ gì thế?"
             ></textarea>
           </div>
-          <div className="h-auto p-4">
-            {selectedImages && selectedImages.length > 0 && (
+          {selectedImages && selectedImages.length > 0 && (
+            <div className="h-auto p-4">
               <MultipleImageGrid images={selectedImages} />
-            )}
-          </div>
+            </div>
+          )}
         </div>
         <div className="px-4">
           <div className="border border-gray-400 p-4 rounded-lg flex justify-between items-center">
