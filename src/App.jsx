@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 
 import AppRoutes from "./routes/AppRoutes";
 
@@ -8,11 +8,6 @@ function App() {
   if (accessToken) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
   }
-  console.log("app");
-
-  useEffect(() => {
-    return () => {};
-  }, []);
 
   return <AppRoutes />;
 }

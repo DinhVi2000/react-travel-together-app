@@ -5,15 +5,6 @@ import { Navigate, Outlet } from "react-router-dom";
 import { USER } from "../constants/paths";
 import { setUserData } from "../redux/auth/login.actions";
 
-const useAuth = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 const getCurrentUser = async () => {
   try {
     const res = await axios.get(USER.GET_CURRENT_USER);
@@ -29,15 +20,20 @@ const getCurrentUser = async () => {
 const ProtectedRoutes = (props) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    (async () => {
-      const user = await getCurrentUser();
-      dispatch(setUserData(user));
-    })();
-  }, []);
+  const useAuth = async () => {
+    const user = await getCurrentUser();
+    dispatch(setUserData(user));
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {}, []);
 
   const auth = useAuth();
-  console.log("auth :", auth);
   return auth ? <Outlet /> : <Navigate to={"/signin"} />;
 };
 

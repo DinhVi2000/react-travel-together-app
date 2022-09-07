@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 
 import "./blogitem.scss";
@@ -22,21 +22,24 @@ import userApi from "../../api/userApi";
 import { Fragment } from "react";
 
 const BlogItem = ({ user }) => {
+  const currentUser = useSelector((state) => state.loginReducer.user);
+
   const { fullName, avatar, id } = user;
   const { images, content, createdDate, location, likedUsers, comments } =
     user.blog;
   const swiper = useSwiper();
 
-  const currentUser = useSelector((state) => state.loginReducer.user);
-
   const checkCurrentUserLiked = () => {
-    let liked = false;
     const userCheck = likedUsers.find((user) => user.id === currentUser.id);
-    userCheck ? (liked = true) : (liked = false);
-    return liked;
+    if (userCheck) {
+      return true;
+    }
+    return false;
   };
 
-  const [liked, setLiked] = useState(checkCurrentUserLiked());
+  const [liked, setLiked] = useState(
+    currentUser ? checkCurrentUserLiked() : false
+  );
   const [likedUserArray, setLikedUserArray] = useState(likedUsers);
 
   const [isOpenComments, setIsOpenComments] = useState(false);
@@ -100,6 +103,10 @@ const BlogItem = ({ user }) => {
     }
     setLoadingComment(false);
   };
+
+  useEffect(() => {
+    checkCurrentUserLiked();
+  }, []);
 
   return (
     <div className="blogItem">
@@ -224,7 +231,7 @@ const BlogItem = ({ user }) => {
               onClick={toggleLike}
             >
               <div className="">
-                {liked ? (
+                {liked == true ? (
                   <i className="bx bxs-heart text-2xl text-red-500"></i>
                 ) : (
                   <i className="bx bx-heart text-2xl"></i>
