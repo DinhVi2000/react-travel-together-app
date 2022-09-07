@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 
 import "./blogitem.scss";
@@ -17,7 +17,7 @@ import Dropdown from "../dropdown/Dropdown";
 import Comment from "./Comment";
 import { comment } from "postcss";
 import blogApi from "../../api/blogApi";
-import { dateSortDesc } from "../../Method";
+import { covertToTagContent, dateSortDesc } from "../../Method";
 import userApi from "../../api/userApi";
 import { Fragment } from "react";
 
@@ -28,6 +28,8 @@ const BlogItem = ({ user, setUsersWithBlog }) => {
   const { images, content, createdDate, location, likedUsers, comments } =
     user.blog;
   const swiper = useSwiper();
+
+  const ref_content = useRef(null);
 
   const checkCurrentUserLiked = () => {
     const userCheck = likedUsers.find((user) => user.id === currentUser.id);
@@ -111,6 +113,22 @@ const BlogItem = ({ user, setUsersWithBlog }) => {
 
   useEffect(() => {
     checkCurrentUserLiked();
+    covertToTagContent(ref_content, content);
+    // // let content = ref.current.innerText;
+    // let newText = document.createElement("span");
+
+    // ref_content.current.appendChild(newText);
+
+    // // let newText = "";
+    // // content.split(" ").forEach((text) => {
+    // //   if (text.includes("#")) {
+    // //     newText = document.createElement("span");
+    // //     newText.innerText = text;
+    // //     ref.current.appendChild(newText);
+    // //   } else {
+    // //     ref.current.appendChild(text);
+    // //   }
+    // // });
   }, []);
 
   return (
@@ -199,7 +217,7 @@ const BlogItem = ({ user, setUsersWithBlog }) => {
         )}
       </div>
       <div className="interactive">
-        <p className="text-sm font-normal py-4">{content || ""}</p>
+        <p className="text-sm font-normal py-4" ref={ref_content}></p>
         <div className="flex justify-between min-h-[40px] pb-[10px] border border-r-0 border-l-0 border-b-1 border-t-0">
           <div className="flex items-center">
             {/* <i className="bx bxs-like bg-blue-500 text-white text-sm p-1 rounded-full mr-1"></i> */}

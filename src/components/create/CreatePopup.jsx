@@ -122,7 +122,7 @@ const CreatePopup = ({ togglePopup, usersWithBlog, setUsersWithBlog }) => {
   return (
     <Fragment>
       <div
-        className="tab-body active w-[500px] pb-4 bg-white flex flex-col justify-between"
+        className="tab-body active max-w-[500px] pb-4 bg-white flex flex-col justify-between"
         ref={content_ref}
       >
         <div>

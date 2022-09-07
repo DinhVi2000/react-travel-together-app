@@ -42,7 +42,7 @@ const BlogDetail = ({ user, blog, setUser }) => {
 
   return (
     <div className="flex relative max-h-[800px] max-w-[1120px]">
-      <div className=" w-[60%] bg-black py-5 flex items-center">
+      <div className=" w-[60%] max-h-[720px] bg-black py-5 flex items-center">
         <img
           src={images[0] || ""}
           alt=""

@@ -7,3 +7,17 @@ export const dateSortDesc = (array, dateType) => {
   }
   return array;
 };
+
+export const covertToTagContent = (ref, content) => {
+  content.split(" ").forEach((text) => {
+    if (text.includes("#")) {
+      let newText = document.createElement("span");
+      newText.innerText = text + " ";
+      newText.className = "text-blue-500 cursor-pointer";
+      ref.current.appendChild(newText);
+    } else {
+      let textSpace = text + " ";
+      ref.current.appendChild(document.createTextNode(textSpace));
+    }
+  });
+};

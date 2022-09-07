@@ -25,6 +25,7 @@ const Home = () => {
     try {
       setLoading(true);
       const res = await axios.get(BLOG.GET_ALL);
+      console.log("res.data  :", res.data);
       if (res.data && res.data.success) {
         let list = [];
         let usersHasBlog = res.data.data.filter(
