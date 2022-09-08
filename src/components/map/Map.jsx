@@ -8,6 +8,7 @@ const Map = ({
   users,
   autocomplete,
   isEnteredPlace,
+  scollToBlogItem,
 }) => {
   const [zoom, setZoom] = useState(6);
 
@@ -35,19 +36,20 @@ const Map = ({
         }}
         // onChildClick={() => {}}
       >
-        {users?.map((users, index) => (
+        {users?.map((user, index) => (
           <div
-            key={users.blog.id}
+            key={user.blog.id}
             className="border border-white rounded-sm w-12 h-12 cursor-pointer"
-            lat={Number(users.blog.lat)}
-            lng={Number(users.blog.lng)}
+            lat={Number(user.blog.lat)}
+            lng={Number(user.blog.lng)}
             onClick={() => {
-              setCoordinates({ lat: users.blog.lat, lng: users.blog.lng });
+              setCoordinates({ lat: user.blog.lat, lng: user.blog.lng });
               setZoom(10);
+              scollToBlogItem(user.blog.id);
             }}
           >
             <img
-              src={users.blog.images[0]}
+              src={user.blog.images[0]}
               alt=""
               className="w-full h-full rounded-sm object-cover"
             />

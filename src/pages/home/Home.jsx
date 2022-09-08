@@ -73,6 +73,13 @@ const Home = () => {
     }
   };
 
+  const filterByTag = (tagContent) => {
+    console.log("tagContent :", tagContent);
+    setUsersWithBlog((prevBlog) => {
+      return prevBlog.filter((user) => user.blog.content.includes(tagContent));
+    });
+  };
+
   useEffect(() => {
     fetchAllBlog();
   }, []);
@@ -100,6 +107,7 @@ const Home = () => {
                         key={user.blog.id}
                         user={user}
                         setUsersWithBlog={setUsersWithBlog}
+                        filterByTag={filterByTag}
                       />
                     )
                   )}

@@ -10,6 +10,7 @@ import { BLOG } from "../../constants/paths";
 
 import { Autocomplete } from "@react-google-maps/api";
 import { dateSortDesc } from "../../Method";
+import { useRef } from "react";
 
 const ViewInMap = () => {
   const [coordinates, setCoordinates] = useState({
@@ -19,6 +20,7 @@ const ViewInMap = () => {
   const [usersWithBlog, setUsersWithBlog] = useState([]);
   const [autocomplete, setAutocomplete] = useState(null);
   const [isEnteredPlace, setIsEnteredPlace] = useState(false);
+  const blogs_ref = useRef(null);
 
   const onLoad = (autoC) => {
     setAutocomplete(autoC);
@@ -81,7 +83,21 @@ const ViewInMap = () => {
       }
     } catch (error) {}
   };
-  // useEffect(() => {}, [coordinates, bounds]);
+
+  const scollToBlogItem = (id) => {
+    const blogItemArray = blogs_ref.current.getElementsByClassName("blogItem");
+    let blogItem;
+    for (let index = 0; index < blogItemArray.length; index++) {
+      if (blogItemArray[index].id === id) {
+        blogItem = blogItemArray[index];
+      }
+    }
+    blogs_ref.current.scrollTo({
+      top: blogItem.offsetTop - 100,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -114,7 +130,11 @@ const ViewInMap = () => {
             </Autocomplete>
           </div>
         </div>
-        <div className="mt-20 bg-gray-100 max-h-[750px] px-1 overflow-auto">
+        <div
+          ref={blogs_ref}
+          className=" mt-20 bg-gray-100 max-h-[750px] px-1 overflow-auto"
+          id="map-blog__list"
+        >
           {usersWithBlog?.length > 0 &&
             dateSortDesc(usersWithBlog, "createdDate").map((user, index) => (
               <BlogItem key={user.blog.id} user={user} />
@@ -127,6 +147,7 @@ const ViewInMap = () => {
         users={usersWithBlog}
         autocomplete={autocomplete}
         isEnteredPlace={isEnteredPlace}
+        scollToBlogItem={scollToBlogItem}
       ></Map>
       {/* </div> */}
     </MainLayout>

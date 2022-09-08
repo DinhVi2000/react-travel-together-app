@@ -21,7 +21,7 @@ import { covertToTagContent, dateSortDesc } from "../../Method";
 import userApi from "../../api/userApi";
 import { Fragment } from "react";
 
-const BlogItem = ({ user, setUsersWithBlog }) => {
+const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
   const currentUser = useSelector((state) => state.loginReducer.user);
 
   const { fullName, avatar, id } = user;
@@ -113,26 +113,11 @@ const BlogItem = ({ user, setUsersWithBlog }) => {
 
   useEffect(() => {
     checkCurrentUserLiked();
-    covertToTagContent(ref_content, content);
-    // // let content = ref.current.innerText;
-    // let newText = document.createElement("span");
-
-    // ref_content.current.appendChild(newText);
-
-    // // let newText = "";
-    // // content.split(" ").forEach((text) => {
-    // //   if (text.includes("#")) {
-    // //     newText = document.createElement("span");
-    // //     newText.innerText = text;
-    // //     ref.current.appendChild(newText);
-    // //   } else {
-    // //     ref.current.appendChild(text);
-    // //   }
-    // // });
+    covertToTagContent(ref_content, content, filterByTag);
   }, []);
 
   return (
-    <div className="blogItem">
+    <div className="blogItem" id={user.blog.id}>
       <div className="info">
         <div className="info__simp mb-1">
           <div className="flex">

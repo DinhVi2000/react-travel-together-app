@@ -195,15 +195,18 @@ const UserDetail = () => {
                       }}
                     >
                       {hoverAt === blog.id ? (
-                        <div className="bg-black opacity-40 w-full h-[300px] absolute z-10">
-                          <div className="absolute z-20 text-white w-full h-full flex items-center justify-center opacity-100">
+                        <Fragment>
+                          <div className="bg-black opacity-40 w-full h-[300px] absolute z-10">
+                            <div className="absolute z-20 text-white w-full h-full flex items-center justify-center opacity-100"></div>
+                          </div>
+                          <div className="absolute z-30 text-white w-full h-full flex items-center justify-center">
                             <i className="bx bxs-heart mr-1"></i>
                             <span>{blog.likedUsers.length || 0}</span>
                             <div className="w-4"></div>
                             <i className="bx bxs-comment mr-1"></i>
                             <span>{blog.comments.length || 0}</span>
                           </div>
-                        </div>
+                        </Fragment>
                       ) : null}
                       <img
                         className="object-cover h-[300px] w-full "

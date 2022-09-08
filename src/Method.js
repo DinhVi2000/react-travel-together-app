@@ -8,12 +8,15 @@ export const dateSortDesc = (array, dateType) => {
   return array;
 };
 
-export const covertToTagContent = (ref, content) => {
+export const covertToTagContent = (ref, content, filterByTag) => {
   content.split(" ").forEach((text) => {
     if (text.includes("#")) {
       let newText = document.createElement("span");
       newText.innerText = text + " ";
       newText.className = "text-blue-500 cursor-pointer";
+      newText.onclick = () => {
+        filterByTag(text);
+      };
       ref.current.appendChild(newText);
     } else {
       let textSpace = text + " ";
