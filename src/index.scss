@@ -93,3 +93,7 @@ a:hover {
   width: 0; /* Remove scrollbar space */
   background: transparent; /* Optional: just make scrollbar invisible */
 }
+
+.max-h-no-navbar {
+  max-height: calc(100vh - 84px);
+}

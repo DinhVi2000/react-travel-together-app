@@ -83,6 +83,7 @@ const ViewInMap = () => {
       }
     } catch (error) {}
   };
+  // useEffect(() => {}, [coordinates, bounds]);
 
   const scollToBlogItem = (id) => {
     const blogItemArray = blogs_ref.current.getElementsByClassName("blogItem");
@@ -93,8 +94,8 @@ const ViewInMap = () => {
       }
     }
     blogs_ref.current.scrollTo({
-      top: blogItem.offsetTop - 100,
-      left: 0,
+      top: blogItem.offsetTop - 80,
+      left: 100,
       behavior: "smooth",
     });
   };
@@ -110,7 +111,7 @@ const ViewInMap = () => {
 
   return (
     <MainLayout>
-      <div className="bg-white w-[420px] absolute z-10 mt-[90px] mx-2 rounded-sm">
+      <div className="bg-white w-[420px] absolute z-10 mt-[84px]">
         <div className="searchBar-container w-[390px] absolute z-20 mt-4 mx-3">
           <div className="searchInNav">
             <Autocomplete
@@ -132,9 +133,10 @@ const ViewInMap = () => {
         </div>
         <div
           ref={blogs_ref}
-          className=" mt-20 bg-gray-100 max-h-[750px] px-1 overflow-auto"
+          className="  bg-gray-100 max-h-no-navbar px-1 overflow-auto"
           id="map-blog__list"
         >
+          <div className="p-9 bg-white"></div>
           {usersWithBlog?.length > 0 &&
             dateSortDesc(usersWithBlog, "createdDate").map((user, index) => (
               <BlogItem key={user.blog.id} user={user} />

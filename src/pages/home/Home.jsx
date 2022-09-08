@@ -25,7 +25,6 @@ const Home = () => {
     try {
       setLoading(true);
       const res = await axios.get(BLOG.GET_ALL);
-      console.log("res.data  :", res.data);
       if (res.data && res.data.success) {
         let list = [];
         let usersHasBlog = res.data.data.filter(
@@ -74,7 +73,6 @@ const Home = () => {
   };
 
   const filterByTag = (tagContent) => {
-    console.log("tagContent :", tagContent);
     setUsersWithBlog((prevBlog) => {
       return prevBlog.filter((user) => user.blog.content.includes(tagContent));
     });

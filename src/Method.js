@@ -20,7 +20,7 @@ export const covertToTagContent = (ref, content, filterByTag) => {
       ref.current.appendChild(newText);
     } else {
       let textSpace = text + " ";
-      ref.current.appendChild(document.createTextNode(textSpace));
+      ref.current.innerHTML += textSpace;
     }
   });
 };

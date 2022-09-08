@@ -8,8 +8,6 @@ const MultipleImageGrid = ({ images }) => {
     });
   };
 
-  // console.log(convertToBlobURL(images));
-
   const imageClassname = (length, index) => {
     if (length === 3) {
       if (index > 0) {

@@ -20,10 +20,9 @@ const getCurrentUser = async () => {
 const ProtectedRoutes = (props) => {
   const dispatch = useDispatch();
 
-  const useAuth = async () => {
-    const user = await getCurrentUser();
-    dispatch(setUserData(user));
+  const useAuth = () => {
     const accessToken = localStorage.getItem("accessToken");
+
     if (accessToken) {
       return true;
     } else {
@@ -34,6 +33,15 @@ const ProtectedRoutes = (props) => {
   useEffect(() => {}, []);
 
   const auth = useAuth();
+  if (auth) {
+    (async () => {
+      try {
+        const user = await getCurrentUser();
+        dispatch(setUserData(user));
+      } catch (error) {}
+    })();
+  }
+
   return auth ? <Outlet /> : <Navigate to={"/signin"} />;
 };
 

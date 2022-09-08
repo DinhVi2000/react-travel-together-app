@@ -28,8 +28,12 @@ const Map = ({
         // defaultZoom={6}
         zoom={zoom}
         style={{ width: "100%", height: "100%" }}
-        margin={[50, 50, 50, 50]}
+        // margin={[50, 50, 50, 50]}
         // options={() => {}}
+        onZoomAnimationEnd={(e) => {}}
+        onZoomAnimationStart={(e) => {
+          setZoom(e);
+        }}
         onChange={(e) => {
           // setCoordinates({ lat: e.center.lat, lng: e.center.lng });
           // setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
@@ -44,7 +48,7 @@ const Map = ({
             lng={Number(user.blog.lng)}
             onClick={() => {
               setCoordinates({ lat: user.blog.lat, lng: user.blog.lng });
-              setZoom(10);
+              setZoom(8);
               scollToBlogItem(user.blog.id);
             }}
           >

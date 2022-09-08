@@ -69,9 +69,7 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
           setLikedUserArray(newLikedUser);
         }
       }
-    } catch (error) {
-      console.log("error :", error);
-    }
+    } catch (error) {}
   };
 
   const deleteBlog = async (blogId) => {
