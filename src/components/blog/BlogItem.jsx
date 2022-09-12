@@ -20,6 +20,8 @@ import blogApi from "../../api/blogApi";
 import { covertToTagContent, dateSortDesc } from "../../Method";
 import userApi from "../../api/userApi";
 import { Fragment } from "react";
+import Popup from "../popup/Popup";
+import Slider from "../slide/Slider";
 
 const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
   const currentUser = useSelector((state) => state.loginReducer.user);
@@ -28,6 +30,8 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
   const { images, content, createdDate, location, likedUsers, comments } =
     user.blog;
   const swiper = useSwiper();
+
+  const [isOpenImage, setIsOpenImage] = useState(false);
 
   const ref_content = useRef(null);
 
@@ -49,6 +53,7 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
   const [commentContent, setCommentContent] = useState("");
   const [loadingComment, setLoadingComment] = useState(false);
   const [isFollower, setIsFollower] = useState(false);
+  const [image, setImage] = useState(null);
 
   const toggleLike = async () => {
     setLiked(!liked);
@@ -170,34 +175,7 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
         </div>
       </div>
       <div className="content relative">
-        {images.length > 1 && (
-          <div className="flex justify-between absolute w-full top-[48%] px-3 z-10">
-            <button>
-              <i className="bx bx-chevron-left bg-white rounded-full text-xl cursor-pointer text-gray-500 "></i>
-            </button>
-            <button onClick={() => swiper.slideNext()}>
-              <i className="bx bx-chevron-right bg-white rounded-full text-xl cursor-pointer text-gray-500"></i>
-            </button>
-          </div>
-        )}
-        {images && (
-          <Swiper
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
-            spaceBetween={0}
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            scrollbar={{ draggable: true }}
-            // onSwiper={(swiper) => console.log(swiper)}
-            // onSlideChange={() => console.log("slide change")}
-          >
-            {images.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img src={image} alt="" className="object-cover h-[550px]" />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        )}
+        {images && <Slider images={images} />}
       </div>
       <div className="interactive">
         <p className="text-sm font-normal py-4" ref={ref_content}></p>
@@ -237,7 +215,7 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
               onClick={toggleLike}
             >
               <div className="">
-                {liked == true ? (
+                {liked === true ? (
                   <i className="bx bxs-heart text-2xl text-red-500"></i>
                 ) : (
                   <i className="bx bx-heart text-2xl"></i>
@@ -291,17 +269,6 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
               >
                 Đăng
               </button>
-              {/* <div className="searchBar-container w-full">
-                <div className="searchInNav">
-                  <div className="flex items-center">
-                    <input
-                      type="text"
-                      placeholder="Viết bình luận..."
-                      className="w-full "
-                    />
-                  </div>
-                </div>
-              </div> */}
             </div>
             {commentsInBlog?.length > 0 &&
               dateSortDesc(commentsInBlog).map((comment) => (
@@ -311,6 +278,20 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
           </div>
         ) : null}
       </div>
+      {isOpenImage && (
+        <Popup
+          content={
+            <img
+              src={image}
+              alt=""
+              className="object-cover max-h-[750px] bg-black"
+            />
+          }
+          handleClose={() => {
+            setIsOpenImage(false);
+          }}
+        />
+      )}
     </div>
   );
 };

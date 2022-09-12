@@ -1,6 +1,8 @@
 import axios from "axios";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
+import blogApi from "../../api/blogApi";
 import BlogItem from "../../components/blog/BlogItem";
 import Create from "../../components/create/Create";
 import CreatePopup from "../../components/create/CreatePopup";
@@ -13,17 +15,30 @@ import "./home.scss";
 
 const Home = () => {
   const [usersWithBlog, setUsersWithBlog] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
+  const home_ref = useRef(null);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const query = useQuery("todos", () => {
+    return blogApi.getAllBlog();
+  });
+
+  const mutation = useMutation(() => {}, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries("todos");
+    },
+  });
+
+  const [isOpenFormCreate, setIsOpenFromCreate] = useState(false);
 
   const togglePopup = () => {
-    setIsOpen(!isOpen);
+    setIsOpenFromCreate(!isOpenFormCreate);
   };
 
   const fetchAllBlog = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const res = await axios.get(BLOG.GET_ALL);
       if (res.data && res.data.success) {
         let list = [];
@@ -65,10 +80,10 @@ const Home = () => {
         });
 
         setUsersWithBlog(list);
-        setLoading(false);
+        // setLoading(false);
       }
     } catch (error) {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -79,16 +94,26 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchAllBlog();
+    home_ref.current.addEventListener(
+      "scroll",
+      (event) => {
+        query.scrollTop = document.getElementById("home").scrollTop;
+      },
+      { passive: true }
+    );
   }, []);
 
   return (
     <Fragment>
       <MainLayout>
         <div>
-          <div className="home">
+          <div
+            className="home h-[100vh] overflow-auto"
+            id="home"
+            ref={home_ref}
+          >
             <Create togglePopup={togglePopup} />
-            {loading ? (
+            {query.isLoading ? (
               <Fragment>
                 {Array(2)
                   .fill({})
@@ -97,30 +122,30 @@ const Home = () => {
                   ))}
               </Fragment>
             ) : (
-              <Fragment>
-                {usersWithBlog?.length > 0 &&
-                  dateSortDesc(usersWithBlog, "createdDate").map(
-                    (user, index) => (
-                      <BlogItem
-                        key={user.blog.id}
-                        user={user}
-                        setUsersWithBlog={setUsersWithBlog}
-                        filterByTag={filterByTag}
-                      />
-                    )
-                  )}
-              </Fragment>
+              <div ref={home_ref}>
+                {query.data?.length > 0 &&
+                  dateSortDesc(query.data, "createdDate").map((user, index) => (
+                    <BlogItem
+                      key={user.blog.id}
+                      user={user}
+                      setUsersWithBlog={setUsersWithBlog}
+                      filterByTag={filterByTag}
+                    />
+                  ))}
+              </div>
             )}
           </div>
         </div>
-        {isOpen && (
+        {isOpenFormCreate && (
           <Popup
             content={
-              <CreatePopup
-                togglePopup={togglePopup}
-                usersWithBlog={usersWithBlog}
-                setUsersWithBlog={setUsersWithBlog}
-              />
+              isOpenFormCreate ? (
+                <CreatePopup
+                  togglePopup={togglePopup}
+                  usersWithBlog={usersWithBlog}
+                  setUsersWithBlog={setUsersWithBlog}
+                />
+              ) : null
             }
             handleClose={togglePopup}
           />
