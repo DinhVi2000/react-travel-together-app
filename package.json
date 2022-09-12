@@ -16,7 +16,6 @@
     "node-sass": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-fb-image-grid": "^0.1.5",
     "react-hook-form": "^7.34.2",
     "react-query": "^3.39.2",
     "react-redux": "^8.0.2",
