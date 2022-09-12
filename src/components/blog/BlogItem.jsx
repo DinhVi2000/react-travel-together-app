@@ -6,16 +6,12 @@ import "./blogitem.scss";
 import defaultAvatar from "../../assets/images/default-avatar.jpg";
 import axios from "axios";
 import { BLOG } from "../../constants/paths";
-import Comments from "./Comment";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 import "swiper/css";
 import Dropdown from "../dropdown/Dropdown";
 import Comment from "./Comment";
-import { comment } from "postcss";
 import blogApi from "../../api/blogApi";
 import { covertToTagContent, dateSortDesc } from "../../Method";
 import userApi from "../../api/userApi";
@@ -29,7 +25,6 @@ const BlogItem = ({ user, setUsersWithBlog, filterByTag }) => {
   const { fullName, avatar, id } = user;
   const { images, content, createdDate, location, likedUsers, comments } =
     user.blog;
-  const swiper = useSwiper();
 
   const [isOpenImage, setIsOpenImage] = useState(false);
 

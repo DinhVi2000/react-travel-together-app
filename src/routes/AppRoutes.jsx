@@ -1,5 +1,4 @@
 import React from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { Route, Routes } from "react-router-dom";
 import Slider from "../components/slide/Slider";

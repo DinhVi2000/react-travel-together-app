@@ -1,14 +1,11 @@
-import axios from "axios";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useSelector } from "react-redux";
 import blogApi from "../../api/blogApi";
 import BlogItem from "../../components/blog/BlogItem";
 import Create from "../../components/create/Create";
 import CreatePopup from "../../components/create/CreatePopup";
 import BlogItemSkeletonLoading from "../../components/loading/BlogItemSkeletonLoading";
 import Popup from "../../components/popup/Popup";
-import { BLOG } from "../../constants/paths";
 import MainLayout from "../../layouts/MainLayout";
 import { dateSortDesc } from "../../Method";
 import "./home.scss";
@@ -36,72 +33,21 @@ const Home = () => {
     setIsOpenFromCreate(!isOpenFormCreate);
   };
 
-  const fetchAllBlog = async () => {
-    try {
-      // setLoading(true);
-      const res = await axios.get(BLOG.GET_ALL);
-      if (res.data && res.data.success) {
-        let list = [];
-        let usersHasBlog = res.data.data.filter(
-          (item) => item.blogs.length > 0
-        );
-        usersHasBlog.forEach((user) => {
-          user.blogs.forEach((blog, index) => {
-            if (blog) {
-              const {
-                createUser,
-                content,
-                images,
-                location,
-                createdDate,
-                ban,
-                id,
-                likedUsers,
-                comments,
-              } = blog;
-              list.push({
-                ...user,
-                // key: index,
-                createdDate,
-                blog: {
-                  createUser,
-                  content,
-                  images,
-                  location,
-                  createdDate,
-                  ban,
-                  likedUsers,
-                  comments,
-                  id,
-                },
-              });
-            }
-          });
-        });
-
-        setUsersWithBlog(list);
-        // setLoading(false);
-      }
-    } catch (error) {
-      // setLoading(false);
-    }
-  };
-
   const filterByTag = (tagContent) => {
     setUsersWithBlog((prevBlog) => {
       return prevBlog.filter((user) => user.blog.content.includes(tagContent));
     });
   };
 
-  useEffect(() => {
-    home_ref.current.addEventListener(
-      "scroll",
-      (event) => {
-        query.scrollTop = document.getElementById("home").scrollTop;
-      },
-      { passive: true }
-    );
-  }, []);
+  // useEffect(() => {
+  //   home_ref.current.addEventListener(
+  //     "scroll",
+  //     (event) => {
+  //       query.scrollTop = document.getElementById("home").scrollTop;
+  //     },
+  //     { passive: true }
+  //   );
+  // }, []);
 
   return (
     <Fragment>
