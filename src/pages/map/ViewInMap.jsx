@@ -95,7 +95,7 @@ const ViewInMap = () => {
     }
     blogs_ref.current.scrollTo({
       top: blogItem.offsetTop - 80,
-      left: 100,
+      left: 0,
       behavior: "smooth",
     });
   };
